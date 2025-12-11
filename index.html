@@ -1,1 +1,213 @@
-VitZar!
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Трансжиры — Корень Нирна</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0d0f10;
+      --card: rgba(255, 255, 255, 0.06);
+      --accent: #ff4f4f;
+      --text: #e9eef2;
+      --muted: #9ba6b2;
+      --surface: rgba(255, 255, 255, 0.03);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Manrope", system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at 20% 20%, rgba(255, 79, 79, 0.08), transparent 32%),
+                  radial-gradient(circle at 80% 0%, rgba(255, 255, 255, 0.05), transparent 30%),
+                  var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px 64px;
+    }
+
+    .page {
+      width: min(1100px, 100%);
+      display: grid;
+      gap: 32px;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+    }
+
+    @media (max-width: 920px) {
+      body { padding: 24px 16px 48px; }
+      .page { grid-template-columns: 1fr; }
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(32px, 4vw + 8px, 52px);
+      letter-spacing: 0.6px;
+    }
+
+    .accent {
+      color: var(--accent);
+    }
+
+    .lead {
+      margin: 14px 0 22px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 17px;
+      max-width: 44ch;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .pill svg { width: 18px; height: 18px; fill: currentColor; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 22px 22px 18px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 70px rgba(0, 0, 0, 0.35);
+    }
+
+    .list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .list a {
+      color: inherit;
+      text-decoration: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.02);
+      transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+    }
+
+    .list a:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .list span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .cover-wrap {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px;
+    }
+
+    .cover-shadow {
+      position: absolute;
+      inset: 20px;
+      filter: blur(32px);
+      background: linear-gradient(135deg, rgba(255, 79, 79, 0.28), rgba(255, 255, 255, 0.12));
+      z-index: 0;
+      opacity: 0.9;
+    }
+
+    .cover {
+      position: relative;
+      width: min(520px, 100%);
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 26px 80px rgba(0, 0, 0, 0.48);
+      z-index: 1;
+    }
+
+    .cover img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: #0f0f0f;
+    }
+
+    .cta {
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), #ff8b68);
+      color: #0d0f10;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-decoration: none;
+      box-shadow: 0 10px 36px rgba(255, 79, 79, 0.25);
+      transition: transform 140ms ease, box-shadow 140ms ease;
+    }
+
+    .cta:hover { transform: translateY(-1px); box-shadow: 0 14px 44px rgba(255, 79, 79, 0.32); }
+
+    .cta svg { width: 18px; height: 18px; fill: currentColor; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section>
+      <div class="pill">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.75a9.25 9.25 0 1 0 9.25 9.25A9.26 9.26 0 0 0 12 2.75Zm0 1.5A7.75 7.75 0 1 1 4.25 12 7.76 7.76 0 0 1 12 4.25Zm-.75 2v5.19l4.48 2.65.75-1.27-3.98-2.35V6.25Z"/></svg>
+        Новый релиз — Корень Нирна
+      </div>
+      <h1>Трансжиры <span class="accent">— Корень Нирна</span></h1>
+      <p class="lead">Одностраничный хаб группы: свежий релиз, подборка треков и прямой проход в общий чат. Всё, что нужно, чтобы услышать и обсудить «Корень Нирна».</p>
+
+      <div class="card">
+        <ul class="list">
+          <li><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noreferrer"><strong>Корень Нирна</strong><span>сингл • YouTube</span></a></li>
+          <li><a href="https://music.yandex.ru/home" target="_blank" rel="noreferrer"><strong>Пыль на струнах</strong><span>альбом • Яндекс Музыка</span></a></li>
+          <li><a href="https://open.spotify.com/" target="_blank" rel="noreferrer"><strong>Трансжиры Live</strong><span>концертный сет • Spotify</span></a></li>
+        </ul>
+      </div>
+
+      <a class="cta" href="https://t.me/transzhiry_chat" target="_blank" rel="noreferrer">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.77 4.23a1.5 1.5 0 0 0-1.53-.23L3.86 10.51a1.5 1.5 0 0 0 .09 2.82l4.94 1.69 1.69 4.94a1.5 1.5 0 0 0 2.82.08l6.5-16.38a1.5 1.5 0 0 0-.13-1.43ZM12.4 19l-1.62-4.72 5.92-5.92-7.58 4.97-4.6-1.58 15.22-6.07Z"/></svg>
+        Чат в Telegram
+      </a>
+    </section>
+
+    <section class="cover-wrap" aria-label="Обложка альбома Корень Нирна">
+      <div class="cover-shadow"></div>
+      <div class="cover">
+        <img src="assets/album-cover.svg" alt="Обложка альбома Корень Нирна группы Трансжиры" loading="lazy">
+      </div>
+    </section>
+  </main>
+</body>
+</html>
