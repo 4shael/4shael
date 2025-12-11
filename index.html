@@ -128,15 +128,7 @@
       justify-content: center;
       align-items: center;
       padding: 12px;
-    }
-
-    .cover-shadow {
-      position: absolute;
-      inset: 20px;
-      filter: blur(32px);
-      background: linear-gradient(135deg, rgba(255, 79, 79, 0.28), rgba(255, 255, 255, 0.12));
-      z-index: 0;
-      opacity: 0.9;
+      perspective: 1200px;
     }
 
     .cover {
@@ -147,6 +139,8 @@
       border: 1px solid rgba(255, 255, 255, 0.12);
       box-shadow: 0 26px 80px rgba(0, 0, 0, 0.48);
       z-index: 1;
+      transform-style: preserve-3d;
+      transition: transform 0.9s ease, box-shadow 0.3s ease;
     }
 
     .cover img {
@@ -155,6 +149,17 @@
       height: 100%;
       object-fit: cover;
       background: #0f0f0f;
+    }
+
+    .cover--flip {
+      animation: coverFlip 1.35s ease;
+    }
+
+    @keyframes coverFlip {
+      0% { transform: rotateY(0); }
+      40% { transform: rotateY(95deg); }
+      60% { transform: rotateY(85deg); }
+      100% { transform: rotateY(180deg); }
     }
 
     .cta {
@@ -205,9 +210,108 @@
     <section class="cover-wrap" aria-label="Обложка альбома Корень Нирна">
       <div class="cover-shadow"></div>
       <div class="cover">
-        <img src="assets/cover.jpg" alt="Обложка альбома Корень Нирна группы Трансжиры" loading="lazy">
+        <img src="assets/cover.jpg" data-alt-src="assets/cover3.jpg" alt="Обложка альбома Корень Нирна группы Трансжиры" loading="lazy">
       </div>
     </section>
   </main>
+  <script>
+    (() => {
+      const cover = document.querySelector('.cover');
+      const coverImg = cover?.querySelector('img');
+      if (!cover || !coverImg) return;
+
+      const clicksTarget = 6;
+      const swapDelay = 420;
+      const revertDelay = 6700;
+      let clicks = 0;
+      let isAnimating = false;
+      const defaultSrc = coverImg.getAttribute('src');
+      const altSrc = coverImg.dataset.altSrc || defaultSrc;
+      let audioCtx;
+
+      cover.addEventListener('click', () => {
+        if (isAnimating) return;
+        clicks += 1;
+        if (clicks === clicksTarget) {
+          clicks = 0;
+          triggerFlip();
+        }
+      });
+
+      function triggerFlip() {
+        isAnimating = true;
+        cover.classList.add('cover--flip');
+        setTimeout(() => {
+          coverImg.src = altSrc;
+        }, swapDelay);
+        playRockRiff();
+        setTimeout(() => {
+          coverImg.src = defaultSrc;
+          cover.classList.remove('cover--flip');
+          isAnimating = false;
+        }, revertDelay);
+      }
+
+      function playRockRiff() {
+        if (!audioCtx) {
+          const AudioContextRef = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContextRef) return;
+          audioCtx = new AudioContextRef();
+        }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+
+        const notes = [
+          { freq: 196, dur: 0.18 },
+          { freq: 233, dur: 0.16 },
+          { freq: 261.6, dur: 0.24 },
+          { freq: 0, dur: 0.12 },
+          { freq: 261.6, dur: 0.22 },
+          { freq: 196, dur: 0.3 }
+        ];
+
+        let currentTime = audioCtx.currentTime + 0.05;
+        notes.forEach(({ freq, dur }) => {
+          if (freq > 0) spawnNote(freq, currentTime, dur);
+          currentTime += dur;
+        });
+      }
+
+      const distortionCurve = (() => {
+        const samples = 44100;
+        const curve = new Float32Array(samples);
+        const deg = Math.PI / 180;
+        const amount = 320;
+        for (let i = 0; i < samples; i += 1) {
+          const x = (i * 2) / samples - 1;
+          curve[i] = ((3 + amount) * x * 20 * deg) / (Math.PI + amount * Math.abs(x));
+        }
+        return curve;
+      })();
+
+      function spawnNote(freq, start, duration) {
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const shaper = audioCtx.createWaveShaper();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(freq, start);
+
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.exponentialRampToValueAtTime(0.45, start + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+
+        shaper.curve = distortionCurve;
+        shaper.oversample = '4x';
+
+        osc.connect(shaper);
+        shaper.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start(start);
+        osc.stop(start + duration + 0.05);
+      }
+    })();
+  </script>
 </body>
 </html>
